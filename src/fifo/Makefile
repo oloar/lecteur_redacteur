@@ -18,11 +18,11 @@ LIBS += -lpthread
 # mettre les .h
 INCLUDE = lecteur_redacteur.h fifo.h
 # mettre des .o 
-OBJS = lecteur_redacteur.o fifo.o
+OBJS = lecteur_redacteur.o  fifo.o
 INCLDIR = -I.
 
 # mettre les noms des exécutables à créer
-PROGS = test_lecteurs_redacteurs
+PROGS = test_lecteurs_redacteurs_fifo
 
 all: $(PROGS)
 
