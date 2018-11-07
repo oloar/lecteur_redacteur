@@ -4,7 +4,7 @@
 # ou alors
 # > make <nom d'1 executable>
 
-.PHONY: all, clean
+.PHONY: all, clean, dist
 
 # Disable implicit rules
 .SUFFIXES:
@@ -22,7 +22,7 @@ OBJS = lecteur_redacteur.o  fifo.o
 INCLDIR = -I.
 
 # mettre les noms des exécutables à créer
-PROGS = test_lecteurs_redacteurs_fifo
+PROGS = test_lr_fifo
 
 all: $(PROGS)
 
@@ -34,3 +34,6 @@ all: $(PROGS)
 
 clean:
 	rm -f $(PROGS) *.o
+
+dist : clean all
+	mv $(PROGS) ../dist/
