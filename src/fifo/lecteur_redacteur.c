@@ -86,7 +86,7 @@ void
 fin_lecture(lecteur_redacteur_t *lr) {
     pthread_mutex_lock(lr->m);
     lr->nb_lecteur--;
-    if(lr->nb_lecteur == 0 && !((data_t *) fifo_get(lr->queue))->est_lecteur)
+    if(lr->nb_lecteur == 0 && !fifo_is_empty(lr->queue) && !((data_t *) fifo_get(lr->queue))->est_lecteur)
         lr_remove_from_queue(lr->queue);
 
     pthread_mutex_unlock(lr->m);
