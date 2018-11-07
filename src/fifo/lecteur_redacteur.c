@@ -59,6 +59,7 @@ void
 detruire_lecteur_redacteur(lecteur_redacteur_t *lr) {
     fifo_destroy(lr->queue);
     pthread_mutex_destroy(lr->m);
+    free(lr->m);
 }
 
 /*

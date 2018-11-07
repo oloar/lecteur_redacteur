@@ -1,3 +1,4 @@
+#include <malloc.h>
 #include "lecteur_redacteur.h"
 
 /*
@@ -6,6 +7,7 @@
  */
 void
 initialiser_lecteur_redacteur(lecteur_redacteur_t *lr) {
+    lr->m = malloc(sizeof(pthread_mutex_t));
     pthread_mutex_init(lr->m, NULL);
     pthread_cond_init(&lr->clecture, NULL);
     pthread_cond_init(&lr->credac, NULL);
@@ -24,6 +26,7 @@ detruire_lecteur_redacteur(lecteur_redacteur_t *lr) {
     pthread_cond_destroy(&lr->clecture);
     pthread_cond_destroy(&lr->credac);
     pthread_mutex_destroy(lr->m);
+    free(lr->m);
 }
 
 /*
