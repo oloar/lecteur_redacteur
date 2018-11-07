@@ -100,6 +100,7 @@ fifo_get(queue_t * q) {
 void *
 fifo_next(queue_t * q) {
     cell_t * c = NULL;
+    void * data = NULL;
     pthread_mutex_lock(q->m);
     if(!fifo_is_empty(q)) {
         c = q->head;
@@ -111,7 +112,9 @@ fifo_next(queue_t * q) {
         }
     }
     pthread_mutex_unlock(q->m);
-    return c->data;
+    data = c->data;
+    free(c);
+    return data;
 }
 
 void
@@ -123,6 +126,7 @@ fifo_destroy(queue_t * q) {
         free(curr);
     }
     pthread_mutex_destroy(q->m);
+    free(q->m);
     free(q);
 }
 
