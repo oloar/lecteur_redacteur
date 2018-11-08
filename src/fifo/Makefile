@@ -22,7 +22,7 @@ OBJS = lecteur_redacteur.o  fifo.o
 INCLDIR = -I.
 
 # mettre les noms des exécutables à créer
-PROGS = test_lr_fifo
+PROGS = test_lr_fifo test_fifo
 
 all: $(PROGS)
 
