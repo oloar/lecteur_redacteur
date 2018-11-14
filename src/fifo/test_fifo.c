@@ -20,12 +20,12 @@ display_result(int b, char * test_name) {
 }
 
 int
-fifo_test_init(queue_t * q) {
+fifo_test_init(struct fifo_queue_t * q) {
     return fifo_get(q) == NULL && q->tail == NULL;
 }
 
 int
-fifo_test_order(queue_t * q) {
+fifo_test_order(struct fifo_queue_t * q) {
     int i, nb;
     test_t values[NB_VAL];
 
@@ -44,7 +44,7 @@ fifo_test_order(queue_t * q) {
 
 int
 main(int argc, char * argv[]) {
-    queue_t * q = fifo_init();
+    struct fifo_queue_t * q = fifo_init();
 
     display_result(fifo_test_init(q), "init");
     display_result(fifo_test_order(q), "order");

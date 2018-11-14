@@ -6,7 +6,7 @@
 #include "fifo.h"
 
 typedef struct lr_t {
-    queue_t * queue;
+    struct fifo_queue_t * queue;
     pthread_mutex_t *m;
     int en_ecriture;
     int nb_lecteur;

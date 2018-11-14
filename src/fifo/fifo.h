@@ -10,17 +10,17 @@ struct cell_t {
     cell_t * next;
 };
 
-typedef struct fifo_queue_t {
+struct fifo_queue_t {
     cell_t * head;
     cell_t * tail;
     pthread_mutex_t * m;
-} queue_t;
+};
 
 /*
  * fifo_init : initialize empty queue
- * @return : queue_t pointer
+ * @return : fifo_queue_t pointer
  */
-queue_t * 
+struct fifo_queue_t *
 fifo_init();
 
 /*
@@ -29,7 +29,7 @@ fifo_init();
  * @return : true if empty, false otherwise.
  */
 int
-fifo_is_empty(queue_t * q);
+fifo_is_empty(struct fifo_queue_t * q);
 
 /*
  * fifo_cell_init : create a cell with given parameters
@@ -58,7 +58,7 @@ fifo_cell_get_data(cell_t * c);
 /*
  * int
  * fifo_cell_is_redacteur(cell_t * c);
- * 
+ *
  * int
  * fifo_cell_is_lecteur(cell_t * c);
  */
@@ -69,7 +69,7 @@ fifo_cell_get_data(cell_t * c);
  * @param data : element to add
  */
 void
-fifo_add(queue_t * q, void * data);
+fifo_add(struct fifo_queue_t * q, void * data);
 
 
 /*
@@ -79,7 +79,7 @@ fifo_add(queue_t * q, void * data);
  * @return : pointer to the data
  */
 void *
-fifo_get(queue_t * q);
+fifo_get(struct fifo_queue_t * q);
 
 /*
  * fifo_next : remove the head from the queue and returns it.
@@ -88,9 +88,9 @@ fifo_get(queue_t * q);
  * @return : pointer to the data
  */
 void *
-fifo_next(queue_t * q);
+fifo_next(struct fifo_queue_t * q);
 
 void
-fifo_destroy(queue_t * q);
+fifo_destroy(struct fifo_queue_t * q);
 
 #endif /* __FIFO_H__ */

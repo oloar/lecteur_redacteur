@@ -33,7 +33,7 @@ lr_add_to_queue(lecteur_redacteur_t * lr, int type) {
  * @param q : la file
  */
 void
-lr_remove_from_queue(queue_t * q) {
+lr_remove_from_queue(struct fifo_queue_t * q) {
     data_t * d = (data_t *) fifo_next(q);
     pthread_cond_signal(&d->cond);
 }

@@ -6,11 +6,11 @@
 
 /*
  * fifo_init : initialize empty queue
- * @return : queue_t pointer
+ * @return : struct fifo_queue_t pointer
  */
-queue_t *
+struct fifo_queue_t *
 fifo_init() {
-    queue_t * q = malloc(sizeof(queue_t));
+    struct fifo_queue_t * q = malloc(sizeof(struct fifo_queue_t));
     q->head = NULL;
     q->tail = NULL;
     q->m = malloc(sizeof(pthread_mutex_t));
@@ -24,7 +24,7 @@ fifo_init() {
  * @return : true if empty, false otherwise.
  */
 int
-fifo_is_empty(queue_t * q) {
+fifo_is_empty(struct fifo_queue_t * q) {
     return (q->head == NULL);
 }
 
@@ -67,7 +67,7 @@ fifo_cell_get_data(cell_t * c) {
  * @param data : pointer to the element to add
  */
 void
-fifo_add(queue_t * q, void * data) {
+fifo_add(struct fifo_queue_t * q, void * data) {
     cell_t * c = fifo_cell_init(data);
     pthread_mutex_lock(q->m);
     if(fifo_is_empty(q)) {
@@ -87,8 +87,8 @@ fifo_add(queue_t * q, void * data) {
  * @return : pointer to the data
  */
 void *
-fifo_get(queue_t * q) {
-    return q->head->data;
+fifo_get(struct fifo_queue_t * q) {
+    return q->head ? q->head->data : NULL;
 }
 
 
@@ -98,7 +98,7 @@ fifo_get(queue_t * q) {
  * @return :  pointer to data, NULL if empty queue.
  */
 void *
-fifo_next(queue_t * q) {
+fifo_next(struct fifo_queue_t * q) {
     cell_t * c = NULL;
     void * data = NULL;
     pthread_mutex_lock(q->m);
@@ -118,7 +118,7 @@ fifo_next(queue_t * q) {
 }
 
 void
-fifo_destroy(queue_t * q) {
+fifo_destroy(struct fifo_queue_t * q) {
     cell_t * curr;
     while(!fifo_is_empty(q)) {
         curr = fifo_next(q);
