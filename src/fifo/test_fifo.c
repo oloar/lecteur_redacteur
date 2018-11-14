@@ -26,10 +26,10 @@ fifo_test_init(queue_t * q) {
 
 int
 fifo_test_order(queue_t * q) {
-    int nb;
+    int i, nb;
     test_t values[NB_VAL];
 
-    for(int i = 0; i < NB_VAL; i++) {
+    for(i = 0; i < NB_VAL; i++) {
         values[i].v = i;
         fifo_add(q, &values[i]);
     }
