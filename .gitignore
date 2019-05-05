@@ -1,0 +1,9 @@
+# build paths
+pub/
+dist/
+src/dist/
+
+# doc files
+docs/*.log
+docs/*.aux
+docs/TD-TP-Lecteurs-Redacteurs.pdf
