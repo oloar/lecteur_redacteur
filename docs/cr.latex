@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{inputenc}[utf8]
+\usepackage{titlesec}
+\usepackage[a4paper, portrait, margin=1.3in]{geometry}
+
+\author{Bastien Zigmann, Gaëtan Sorin}
+\title{TP Synchronisation}
+\date{2 novembre 2018}
+
+\begin{document}
+\maketitle
+\section{Lecteurs - Rédacteurs}
+\subsection{Question 1}
+Ce programme initialise un nombre de thread lecteur et rédacteur selon les valeurs passées en argument.\\
+Cependant, tous les problèmes de synchronisation ne sont pas détectés. En effet si un rédacteur écrit la même valeur que la valeur précédente, notamment lors d'une lecture simultanée, une incohérence peut ne pas être détectée.
+\subsection{Question 2}
+Cette solution revient à exécuter les threads en séquence, un à la fois. On perd alors l'intérêt du multithreading.
+\subsection{Question 3-4}
+Les différentes solutions se trouvent dans leurs répertoires respectif. Chaque version peut-être compilée depuis son répertoire avec \texttt{make}.\\
+Il est également possible de compiler toutes les versions à l'aide du script bash \texttt{build.sh}. Les exécutables sont alors placés dans le répertoire \texttt{dist}.\\
+Un programme de test de la fifo est disponible dans \texttt{test\_fifo.c}.
+
+\subsubsection{Implémentations}
+Les version priorité lecteur et rédacteur sont implémentées à l'identique hormis les condition de mise en attente et de signal des threads.
+\begin{itemize}
+    \item Quand la priorité est donnée aux lecteurs, un lecteur prend se met en attente que si la donnée est en écriture. Un fois la lecture finie, si aucun autre lecteur n'est en lecture, il signale un rédacteur.\\
+        Un rédacteur, quant à lui, se mettra en attente si la donnée est en écriture ou en lecture, mais aussi si un ou plusieurs lecteurs sont en attente.\\
+        Au moment de rendre la main le rédacteur, si des lecteurs attendent, ils sont signalés à l'aide d'un broadcast sur leur condition.\\
+    \item Quand la priorité est donnée aux rédacteurs, un rédacteur se mettra en attente lorsque la donnée est en lecture ou en écriture.\\
+        Au moment de rendre la main si un ou plusieurs rédacteurs sont en attente, il en signale un. Sinon il signale tous les lecteurs en attente.\\
+        Un lecteur se mettra en attente si la donnée est en écriture ou si au moins un rédacteur est en attente. Une fois la lecture effectuée, et si aucun autre lecteur n'est en lecture, le lecteur signale un rédacteur en attente.\\
+\end{itemize}
+
+Pour version avec file d'attente, on a choisi d'utiliser une file de structures composées d'une condition et d'un entier. La condition sert à mettre le thread en attente et à le réveillé.
+
+\begin{itemize}
+    \item Un lecteur se met dans la file, si elle n'est pas vide ou si la donnée est en écriture.\\
+        Après son attente, il reveille le lecteur suivant si il y'en a un et le sort de la file, et effectue la lecture.\\
+        À la fin de sa lecture, si il était le dernier en lecture, il reveille le prochain dans la file et l'en sort.\\
+    \item Un rédacteur s'ajoute dans la queue si la file n'est pas vide, si la donnée est utilisée (lecture ou écriture). Puis à son tour, effectue son écriture.\\
+        Une l'écriture terminée, si la file n'est pas vide, il en sort le prochain et le réveille.\\
+\end{itemize}
+\end{document}
+
